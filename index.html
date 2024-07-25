@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #e3f2fd;
+    }
+    h1 {
+      color: #1976d2;
+    }
+    #form-wrapper, #data-wrapper {
+      width: 80%;
+      max-width: 600px;
+      padding: 20px;
+      margin: 20px;
+      background: #ffffff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      transition: box-shadow 0.3s ease;
+    }
+    #form-wrapper:hover, #data-wrapper:hover {
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+    #student-form label {
+      font-weight: bold;
+      color: #1976d2;
+      display: block;
+      margin-bottom: 5px;
+    }
+    #student-form input[type="text"],
+    #student-form input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    #student-form input[type="button"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    #student-form input[type="button"]:hover {
+      background-color: #0d47a1;
+    }
+    .student-details {
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #e3f2fd;
+    }
+    .student-details p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="form-wrapper">
+    <h1>Student Form</h1>
+    <form id="student-form">
+      <label for="student-name">Name:</label>
+      <input type="text" id="student-name" name="student-name">
+      <label for="student-rollno">Roll No:</label>
+      <input type="text" id="student-rollno" name="student-rollno">
+      <label for="student-mark1">Mark 1:</label>
+      <input type="number" id="student-mark1" name="student-mark1" min="0" max="100">
+      <label for="student-mark2">Mark 2:</label>
+      <input type="number" id="student-mark2" name="student-mark2" min="0" max="100">
+      <label for="student-mark3">Mark 3:</label>
+      <input type="number" id="student-mark3" name="student-mark3" min="0" max="100">
+      <input type="button" value="Submit" onclick="addStudent()">
+    </form>
+  </div>
+
+  <div id="data-wrapper">
+    <h1>Student Data</h1>
+    <div id="student-data"></div>
+  </div>
+
+  <script>
+    class Student {
+      constructor(name, rollno, mark1, mark2, mark3) {
+        this.name = name;
+        this.rollno = rollno;
+        this.mark1 = mark1;
+        this.mark2 = mark2;
+        this.mark3 = mark3;
+        this.average = this.calculateAverage();
+      }
+
+      calculateAverage() {
+        return ((parseFloat(this.mark1) + parseFloat(this.mark2) + parseFloat(this.mark3)) / 3).toFixed(2);
+      }
+    }
+
+    let studentArray = [];
+
+    function addStudent() {
+      const studentName = document.getElementById("student-name").value;
+      const studentRollno = document.getElementById("student-rollno").value;
+      const studentMark1 = document.getElementById("student-mark1").value;
+      const studentMark2 = document.getElementById("student-mark2").value;
+      const studentMark3 = document.getElementById("student-mark3").value;
+
+      if(studentName && studentRollno && studentMark1 && studentMark2 && studentMark3) {
+        const newStudent = new Student(studentName, studentRollno, studentMark1, studentMark2, studentMark3);
+        studentArray.push(newStudent);
+
+        document.getElementById("student-data").innerHTML = "";
+        studentArray.forEach((student) => {
+          document.getElementById("student-data").innerHTML += 
+            `<div class="student-details">
+              <p><strong>Name:</strong> ${student.name}</p>
+              <p><strong>Roll No:</strong> ${student.rollno}</p>
+              <p><strong>Mark 1:</strong> ${student.mark1}</p>
+              <p><strong>Mark 2:</strong> ${student.mark2}</p>
+              <p><strong>Mark 3:</strong> ${student.mark3}</p>
+              <p><strong>Average:</strong> ${student.average}</p>
+            </div>`;
+        });
+
+        document.getElementById("student-name").value = "";
+        document.getElementById("student-rollno").value = "";
+        document.getElementById("student-mark1").value = "";
+        document.getElementById("student-mark2").value = "";
+        document.getElementById("student-mark3").value = "";
+      } else {
+        alert("Please fill all the fields.");
+      }
+    }
+  </script>
+</body>
+</html>
